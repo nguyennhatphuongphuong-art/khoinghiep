@@ -64,7 +64,7 @@ const asset=(p)=>EMBED[p]||p;
 (()=>{
 'use strict';
 const app=document.getElementById('app');
-const VERSION=6;
+const VERSION=7;
 const recipes={
  'cafe-den':{name:'Cà phê đen',price:15000,steps:['coffee','sugar','ice'],drink:'cafe-den',color:'coffee'},
  'cafe-sua':{name:'Cà phê sữa',price:17000,steps:['coffee','condensed','ice'],drink:'cafe-sua',color:'coffee'},
@@ -142,7 +142,7 @@ const dialogueSets={
 };
 const state={
  version:VERSION,screen:'intro',dialogueId:'intro',dialogueIndex:0,
- money:0,personalA:2500000,personalB:2500000,location:null,cart:null,
+ money:5000000,personalA:2500000,personalB:2500000,location:null,cart:null,
  day:1,time:7,happiness:78,orders:[],cup:null,inventory:{
   coffee:10,sugar:10,ice:20,condensed:8,freshmilk:8,milktea:10,olong:6,matcha:6,
   orange:8,pineapple:8,lemon:8,lychee:6,boba:8,coconut:8,fruit:8
@@ -153,8 +153,8 @@ const state={
 function money(n){return Number(n||0).toLocaleString('vi-VN')+'đ'}
 function el(tag,cls,html){const x=document.createElement(tag);if(cls)x.className=cls;if(html!==undefined)x.innerHTML=html;return x}
 function button(text,cls,fn){const b=el('button',cls||'primary',text);b.type='button';b.addEventListener('click',fn);return b}
-function save(){try{localStorage.setItem('hai-dua-mo-quan-save-v6',JSON.stringify(state))}catch(e){}}
-function load(){try{const raw=localStorage.getItem('hai-dua-mo-quan-save-v6');if(!raw)return;const s=JSON.parse(raw);if(s&&s.version===VERSION)Object.assign(state,s)}catch(e){}}
+function save(){try{localStorage.setItem('hai-dua-mo-quan-save-v7',JSON.stringify(state))}catch(e){}}
+function load(){try{const raw=localStorage.getItem('hai-dua-mo-quan-save-v7');if(!raw)return;const s=JSON.parse(raw);if(s&&s.version===VERSION)Object.assign(state,s)}catch(e){}}
 function toast(msg){let x=document.getElementById('game-toast');if(!x){x=el('div');x.id='game-toast';x.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:999;background:#3d291e;color:#fff;padding:10px 14px;border:3px solid #b27b4e;border-radius:14px;font-weight:1000;max-width:90%;text-align:center';document.body.appendChild(x)}x.textContent=msg;x.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.style.display='none',1300)}
 function openDialogue(id){if(!dialogueSets[id])return;state.dialogueId=id;state.dialogueIndex=0;state.paused=true;render()}
 function advanceDialogue(){const id=state.dialogueId;if(!id)return;const set=dialogueSets[id];if(state.dialogueIndex<set.length-1){state.dialogueIndex++;render();return}state.dialogueId=null;state.dialogueIndex=0;state.paused=false;state.dialogueSeen[id]=state.day;if(id==='intro'){state.screen='setup';state.dialog=0}if(id==='close'){state.screen='end'}render()}
